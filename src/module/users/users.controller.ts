@@ -20,7 +20,7 @@ const createUser = async (req: Request, res: Response) => {
         data: error,
       });
     }
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       massage: "somthing went wrong",
@@ -33,10 +33,10 @@ const getUsers = async (req: Request, res: Response) => {
     const result = await userService.getAllUser();
     res.status(200).json({
       success: true,
-      massage: "User Find successfully",
+      massage: "Users fetched successfully!",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       massage: "somthing went wrong",
@@ -46,15 +46,15 @@ const getUsers = async (req: Request, res: Response) => {
 };
 const getSingleUser = async (req: Request, res: Response) => {
   try {
-    const id = req.params.id;
-    console.log(id);
+    const id = req.params.userId;
+    console.log({ singleuserId: id });
     const result = await userService.getSingleUser(id);
     res.status(200).json({
       success: true,
-      massage: "User Find successfully",
+      massage: "User fetched successfully!",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       massage: "somthing went wrong",
@@ -64,15 +64,15 @@ const getSingleUser = async (req: Request, res: Response) => {
 };
 const updateUser = async (req: Request, res: Response) => {
   try {
-    const id = req.params.id;
+    const id = req.params.userId;
     const user = req.body;
     const result = await userService.updateUser(id, user);
     res.status(200).json({
       success: true,
-      massage: "update successfully",
+      massage: "User updated successfully!",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       massage: "somthing went wrong",
@@ -80,16 +80,78 @@ const updateUser = async (req: Request, res: Response) => {
     });
   }
 };
-const deleteUser = async (req: Request, res: Response) => {
+const createOrder = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
+    const order = req.body;
+    const result = await userService.createOrder(id, order);
+    res.status(200).json({
+      success: true,
+      massage: "Order created successfully!",
+      data: null,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      massage: "somthing went wrong",
+      data: error,
+    });
+  }
+};
+
+const getOrder = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
+    console.log(id);
+    const result = await userService.getOrder(id);
+    res.status(200).json({
+      success: true,
+      massage: "Order fetched successfully!",
+      data: {
+        orders: result,
+      },
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      massage: "somthing went wrong",
+      data: error,
+    });
+  }
+};
+const getTotalPrice = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
+    const result = await userService.getTotalPrice(id);
+    res.status(200).json({
+      success: true,
+      massage: "Total price calculated successfully!",
+      data: {
+        totalPrice: result,
+      },
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      massage: "User not found",
+      data: {
+        code: 404,
+        description: "User not found!",
+      },
+    });
+  }
+};
+
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
     const result = await userService.deleteUser(id);
     res.status(200).json({
       success: true,
-      massage: "delete successfully",
+      massage: "User deleted successfully!",
       data: {},
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       massage: "somthing went wrong",
@@ -104,4 +166,7 @@ export const userController = {
   getSingleUser,
   updateUser,
   deleteUser,
+  createOrder,
+  getTotalPrice,
+  getOrder,
 };

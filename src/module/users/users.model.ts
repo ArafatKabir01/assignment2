@@ -1,15 +1,17 @@
 import bcrypt from "bcrypt";
-import { Document, model, Query, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import config from "../../config";
-import { TUser, UserMethods, UserModel } from "./users.interface";
-const usersSchema = new Schema<TUser, UserModel, UserMethods>({
+import { TUser } from "./users.interface";
+const usersSchema = new Schema<TUser>({
   userId: {
     type: Number,
     required: true,
+    unique: true,
   },
   username: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -55,18 +57,26 @@ const usersSchema = new Schema<TUser, UserModel, UserMethods>({
       required: true,
     },
   },
+  order: [
+    {
+      productName: { type: String },
+      price: { type: Number },
+      quantity: { type: Number },
+    },
+  ],
 });
 
-usersSchema.pre(/^find/, function (this: Query<TUser, Document>, next) {
-  this.find({ isActive: { $eq: true } });
-  next();
-});
-
-usersSchema.pre("save", async function () {
+usersSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(
     this.password,
     Number(config.bycript_sult_round)
   );
+  next();
+});
+
+usersSchema.post("save", async function (doc, next) {
+  doc.password = "";
+  next();
 });
 
 export const userModel = model<TUser>("Users", usersSchema);

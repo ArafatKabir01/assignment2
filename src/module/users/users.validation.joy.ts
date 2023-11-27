@@ -17,6 +17,13 @@ const userValidationSchema = Joi.object({
     city: Joi.string().required(),
     country: Joi.string().required(),
   }).required(),
+  order: Joi.array().items(
+    Joi.object({
+      productName: Joi.string(),
+      price: Joi.number(),
+      quantity: Joi.number(),
+    })
+  ),
 });
 
 export default userValidationSchema;
