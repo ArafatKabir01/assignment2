@@ -1,7 +1,8 @@
-import { model, Schema } from "mongoose";
-import { User } from "./users.interface";
-
-const usersSchema = new Schema<User>({
+import bcrypt from "bcrypt";
+import { Document, model, Query, Schema } from "mongoose";
+import config from "../../config";
+import { TUser, UserMethods, UserModel } from "./users.interface";
+const usersSchema = new Schema<TUser, UserModel, UserMethods>({
   userId: {
     type: Number,
     required: true,
@@ -56,4 +57,16 @@ const usersSchema = new Schema<User>({
   },
 });
 
-export const userModel = model<User>("Users", usersSchema);
+usersSchema.pre(/^find/, function (this: Query<TUser, Document>, next) {
+  this.find({ isActive: { $eq: true } });
+  next();
+});
+
+usersSchema.pre("save", async function () {
+  this.password = await bcrypt.hash(
+    this.password,
+    Number(config.bycript_sult_round)
+  );
+});
+
+export const userModel = model<TUser>("Users", usersSchema);

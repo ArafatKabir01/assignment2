@@ -12,9 +12,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userService = void 0;
 const users_model_1 = require("./users.model");
 const createUser = (userData) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield users_model_1.userModel.create(userData);
+    // const result = await userModel.create(userData);
+    const user = new users_model_1.userModel(userData);
+    const result = user.save();
+    return result;
+});
+const getteUser = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield users_model_1.userModel.find();
     return result;
 });
 exports.userService = {
     createUser,
+    getteUser,
 };

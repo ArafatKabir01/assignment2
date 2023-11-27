@@ -43,6 +43,24 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
 });
+const gateteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield users_service_1.userService.getteUser();
+        res.status(200).json({
+            success: true,
+            massage: "User created successfully!",
+            data: result,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            massage: "somthing went wrong",
+            data: error,
+        });
+    }
+});
 exports.userContriller = {
     createUser,
+    gateteUser,
 };

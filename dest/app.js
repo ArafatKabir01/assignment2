@@ -10,6 +10,7 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.use("/POST", usres_router_1.userRouter);
+app.use("/GET", usres_router_1.userRouter);
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
