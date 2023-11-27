@@ -2,7 +2,6 @@ import { TUser } from "./users.interface";
 import { userModel } from "./users.model";
 
 const createUser = async (userData: TUser) => {
-  // const result = await userModel.create(userData);
   const user = new userModel(userData);
   const result = user.save();
   return result;
@@ -32,7 +31,11 @@ const createOrder = async (
   id: any,
   orderData: object
 ): Promise<object | null> => {
-  const result = await userModel.updateOne(id, { $push: orderData });
+  console.log(id);
+  const result = await userModel.findByIdAndUpdate(
+    { _id: id },
+    { $push: orderData }
+  );
   return result;
 };
 const getOrder = async (
@@ -43,6 +46,7 @@ const getOrder = async (
   const result = await userModel.findById(id);
   return result?.order;
 };
+
 const getTotalPrice = async (id: string): Promise<number | null> => {
   const result = await userModel.findById(id);
   const totalPrice = (result?.order || []).reduce(

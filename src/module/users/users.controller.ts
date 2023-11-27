@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { userService } from "./users.service";
 import userValidationSchema from "./users.validation.joy";
 
+//create users
 const createUser = async (req: Request, res: Response) => {
   try {
     const { users: userData } = req.body;
@@ -28,6 +29,8 @@ const createUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+//get Users
 const getUsers = async (req: Request, res: Response) => {
   try {
     const result = await userService.getAllUser();
@@ -44,6 +47,8 @@ const getUsers = async (req: Request, res: Response) => {
     });
   }
 };
+
+//get single users
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const id = req.params.userId;
@@ -62,6 +67,8 @@ const getSingleUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+//Update users
 const updateUser = async (req: Request, res: Response) => {
   try {
     const id = req.params.userId;
@@ -80,9 +87,30 @@ const updateUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+//Delete user
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
+    const result = await userService.deleteUser(id);
+    res.status(200).json({
+      success: true,
+      massage: "User deleted successfully!",
+      data: null,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      massage: "somthing went wrong",
+      data: error,
+    });
+  }
+};
+
+//Create orders
 const createOrder = async (req: Request, res: Response) => {
   try {
-    const id = req.params.id;
+    const id = req.params.userId;
     const order = req.body;
     const result = await userService.createOrder(id, order);
     res.status(200).json({
@@ -99,6 +127,7 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
+//Get oreders
 const getOrder = async (req: Request, res: Response) => {
   try {
     const id = req.params.userId;
@@ -119,6 +148,8 @@ const getOrder = async (req: Request, res: Response) => {
     });
   }
 };
+
+//Get Total Price
 const getTotalPrice = async (req: Request, res: Response) => {
   try {
     const id = req.params.userId;
@@ -138,24 +169,6 @@ const getTotalPrice = async (req: Request, res: Response) => {
         code: 404,
         description: "User not found!",
       },
-    });
-  }
-};
-
-const deleteUser = async (req: Request, res: Response) => {
-  try {
-    const id = req.params.userId;
-    const result = await userService.deleteUser(id);
-    res.status(200).json({
-      success: true,
-      massage: "User deleted successfully!",
-      data: {},
-    });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      massage: "somthing went wrong",
-      data: error,
     });
   }
 };

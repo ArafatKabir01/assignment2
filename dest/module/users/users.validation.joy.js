@@ -21,5 +21,10 @@ const userValidationSchema = joi_1.default.object({
         city: joi_1.default.string().required(),
         country: joi_1.default.string().required(),
     }).required(),
+    order: joi_1.default.array().items(joi_1.default.object({
+        productName: joi_1.default.string(),
+        price: joi_1.default.number(),
+        quantity: joi_1.default.number(),
+    })),
 });
 exports.default = userValidationSchema;
