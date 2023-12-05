@@ -34,7 +34,18 @@ const getAllUser = () => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield users_model_1.userModel.findById(id);
+    const result = yield users_model_1.userModel.findById(id).select({
+        fullName: 1,
+        address: 1,
+        _id: 1,
+        userId: 1,
+        username: 1,
+        age: 1,
+        email: 1,
+        isActive: 1,
+        hobbies: 1,
+        __v: 1,
+    }).select('-order').select('-password');
     return result;
 });
 const updateUser = (id, userData) => __awaiter(void 0, void 0, void 0, function* () {
@@ -47,6 +58,9 @@ const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const createOrder = (id, orderData) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(id);
+    if (!users_model_1.userModel.findById(id)) {
+        console.log("false");
+    }
     const result = yield users_model_1.userModel.findByIdAndUpdate({ _id: id }, { $push: orderData });
     return result;
 });

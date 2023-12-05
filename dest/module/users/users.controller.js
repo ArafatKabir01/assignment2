@@ -18,7 +18,7 @@ const users_validation_joy_1 = __importDefault(require("./users.validation.joy")
 //create users
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { users: userData } = req.body;
+        const userData = req.body;
         const { error, value } = users_validation_joy_1.default.validate(userData);
         if (value) {
             const result = yield users_service_1.userService.createUser(value);
@@ -66,7 +66,6 @@ const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.userId;
-        console.log({ singleuserId: id });
         const result = yield users_service_1.userService.getSingleUser(id);
         res.status(200).json({
             success: true,
