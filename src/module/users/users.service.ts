@@ -57,13 +57,10 @@ const createOrder = async (
   id: any,
   orderData: object
 ): Promise<object | null> => {
-  console.log(id);
-  if(!userModel.findById(id)){
-    console.log("false")
-  }
+  const ordersData = {order:orderData}
   const result = await userModel.findByIdAndUpdate(
     { _id: id },
-    { $push: orderData }
+    { $push: ordersData }
   );
   return result;
 };
