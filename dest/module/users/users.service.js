@@ -57,11 +57,8 @@ const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const createOrder = (id, orderData) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(id);
-    if (!users_model_1.userModel.findById(id)) {
-        console.log("false");
-    }
-    const result = yield users_model_1.userModel.findByIdAndUpdate({ _id: id }, { $push: orderData });
+    const ordersData = { order: orderData };
+    const result = yield users_model_1.userModel.findByIdAndUpdate({ _id: id }, { $push: ordersData });
     return result;
 });
 const getOrder = (id) => __awaiter(void 0, void 0, void 0, function* () {
