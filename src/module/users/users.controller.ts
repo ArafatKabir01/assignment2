@@ -5,7 +5,7 @@ import userValidationSchema from "./users.validation.joy";
 //create users
 const createUser = async (req: Request, res: Response) => {
   try {
-    const { users: userData } = req.body;
+    const  userData  = req.body;
     const { error, value } = userValidationSchema.validate(userData);
     if (value) {
       const result = await userService.createUser(value);
@@ -52,7 +52,7 @@ const getUsers = async (req: Request, res: Response) => {
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const id = req.params.userId;
-    console.log({ singleuserId: id });
+   
     const result = await userService.getSingleUser(id);
     res.status(200).json({
       success: true,
@@ -131,7 +131,6 @@ const createOrder = async (req: Request, res: Response) => {
 const getOrder = async (req: Request, res: Response) => {
   try {
     const id = req.params.userId;
-    console.log(id);
     const result = await userService.getOrder(id);
     res.status(200).json({
       success: true,

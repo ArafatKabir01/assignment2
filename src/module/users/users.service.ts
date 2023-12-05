@@ -8,11 +8,36 @@ const createUser = async (userData: TUser) => {
 };
 
 const getAllUser = async (): Promise<TUser[]> => {
-  const result = await userModel.find();
+  const result = await userModel.aggregate([
+    {
+      $project: {
+        userId: 1,
+        username: 1,
+        fullName: 1,
+        age: 1,
+        email: 1,
+        isActive: 1,
+        hobbies: 1,
+        address: 1,
+        
+      }
+    }
+  ]);
   return result;
 };
 const getSingleUser = async (id: string): Promise<TUser | null> => {
-  const result = await userModel.findById(id);
+  const result = await userModel.findById(id).select({
+    fullName: 1,
+    address: 1,
+    _id: 1,
+    userId: 1,
+    username: 1,
+    age: 1,
+    email: 1,
+    isActive: 1,
+    hobbies: 1,
+    __v: 1,
+  }).select('-order').select('-password')
   return result;
 };
 const updateUser = async (
@@ -20,6 +45,7 @@ const updateUser = async (
   userData: TUser
 ): Promise<TUser | null> => {
   const result = await userModel.findByIdAndUpdate(id, userData);
+  
   return result;
 };
 
@@ -32,6 +58,9 @@ const createOrder = async (
   orderData: object
 ): Promise<object | null> => {
   console.log(id);
+  if(!userModel.findById(id)){
+    console.log("false")
+  }
   const result = await userModel.findByIdAndUpdate(
     { _id: id },
     { $push: orderData }
