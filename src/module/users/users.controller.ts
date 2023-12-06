@@ -52,7 +52,7 @@ const getUsers = async (req: Request, res: Response) => {
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const id = req.params.userId;
-   
+   console.log(id)
     const result = await userService.getSingleUser(id);
     res.status(200).json({
       success: true,

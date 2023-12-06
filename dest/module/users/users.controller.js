@@ -66,6 +66,7 @@ const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.userId;
+        console.log(id);
         const result = yield users_service_1.userService.getSingleUser(id);
         res.status(200).json({
             success: true,

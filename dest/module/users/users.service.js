@@ -34,7 +34,7 @@ const getAllUser = () => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield users_model_1.userModel.findById(id).select({
+    const result = yield users_model_1.userModel.findOne({ userId: id }).select({
         fullName: 1,
         address: 1,
         _id: 1,
@@ -49,24 +49,35 @@ const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const updateUser = (id, userData) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield users_model_1.userModel.findByIdAndUpdate(id, userData);
+    const result = yield users_model_1.userModel.findOneAndUpdate({ userId: id }, userData).select({
+        fullName: 1,
+        address: 1,
+        _id: 1,
+        userId: 1,
+        username: 1,
+        age: 1,
+        email: 1,
+        isActive: 1,
+        hobbies: 1,
+        __v: 1,
+    }).select('-order').select('-password');
     return result;
 });
 const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield users_model_1.userModel.findByIdAndDelete(id);
+    const result = yield users_model_1.userModel.findOneAndDelete({ userId: id });
     return result;
 });
 const createOrder = (id, orderData) => __awaiter(void 0, void 0, void 0, function* () {
     const ordersData = { order: orderData };
-    const result = yield users_model_1.userModel.findByIdAndUpdate({ _id: id }, { $push: ordersData });
+    const result = yield users_model_1.userModel.findOneAndUpdate({ userId: id }, { $push: ordersData });
     return result;
 });
 const getOrder = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield users_model_1.userModel.findById(id);
+    const result = yield users_model_1.userModel.findOne({ userId: id });
     return result === null || result === void 0 ? void 0 : result.order;
 });
 const getTotalPrice = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield users_model_1.userModel.findById(id);
+    const result = yield users_model_1.userModel.findOne({ userId: id });
     const totalPrice = ((result === null || result === void 0 ? void 0 : result.order) || []).reduce((accumulator, element) => accumulator + element.quantity * element.price, 0);
     return totalPrice;
 });
